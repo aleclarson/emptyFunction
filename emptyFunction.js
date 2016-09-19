@@ -24,15 +24,21 @@ function makeEmptyFunction(arg) {
  */
 var emptyFunction = function emptyFunction() {};
 
-emptyFunction.thatReturns = makeEmptyFunction;
-emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-emptyFunction.thatReturnsThis = function () {
-  return this;
+var props = {
+  thatReturns: makeEmptyFunction,
+  thatReturnsFalse: makeEmptyFunction(false),
+  thatReturnsTrue: makeEmptyFunction(true),
+  thatReturnsNull: makeEmptyFunction(null),
+  thatReturnsThis: function () {
+    return this;
+  },
+  thatReturnsArgument: function (arg) {
+    return arg;
+  },
 };
-emptyFunction.thatReturnsArgument = function (arg) {
-  return arg;
-};
+
+Object.keys(props).forEach(function (key) {
+  Object.defineProperty(emptyFunction, key, { value: props[key] });
+});
 
 module.exports = emptyFunction;
